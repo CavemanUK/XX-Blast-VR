@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/xxblastship.gltf-a5ff5c728b65b19f63c46652976ded88.scn"
+path="res://.import/xxblastship.gltf-5b191e54bf743e6422cc73603191f162.scn"
 
 [deps]
 
-source_file="res://Blender Imports/xxblastship.gltf"
-dest_files=[ "res://.import/xxblastship.gltf-a5ff5c728b65b19f63c46652976ded88.scn" ]
+source_file="res://Blender Imports/player/xxblastship.gltf"
+dest_files=[ "res://.import/xxblastship.gltf-5b191e54bf743e6422cc73603191f162.scn" ]
 
 [params]
 

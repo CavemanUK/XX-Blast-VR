@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/player.gd" type="Script" id=1]
-[ext_resource path="res://Blender Imports/Black Glass.material" type="Material" id=2]
+[ext_resource path="res://Blender Imports/player/Black Glass.material" type="Material" id=2]
 [ext_resource path="res://Blender Imports/Base Gray.material" type="Material" id=3]
 [ext_resource path="res://Blender Imports/Booster.material" type="Material" id=4]
 [ext_resource path="res://Blender Imports/Wing Blue.material" type="Material" id=5]
