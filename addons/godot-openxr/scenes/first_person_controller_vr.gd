@@ -37,9 +37,6 @@ func initialise() -> bool:
 		# Find the viewport we're using to render our XR output
 		var vp : Viewport = _get_xr_viewport()
 
-		# Start passthrough?
-		_start_passthrough()
-
 		# Connect to our plugin signals
 		_connect_plugin_signals()
 

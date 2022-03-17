@@ -29,9 +29,15 @@ func _physics_process(_delta):
 		
 	velo.x = move_toward(velo.x, inputVector.x * MAXSPEED, ACCELERATION)
 	velo.y = move_toward(velo.y, inputVector.y * MAXSPEED, ACCELERATION)
+	
 	rotation_degrees.z = velo.x * -.8
 	rotation_degrees.x = velo.y / 2
 	rotation_degrees.y = -velo.x / 2
+	
+	if velo.x == 0 and velo.y == 0:
+		$AnimationPlayer.play("New Anim")
+	else:
+		$AnimationPlayer.stop()
 	
 	move_and_slide(velo)
 
