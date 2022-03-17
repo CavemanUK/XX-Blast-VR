@@ -24,7 +24,7 @@ func updateShipTitle(myString):
 	pass
 	
 func _input(event):
-	var player = $"../player"
+	var player = $"../../player"
 	var joystick_vector = Vector2(get_joystick_axis(0), get_joystick_axis(1))
 	joystick_vector = joystick_vector.normalized().round()
 	var trigger_throttle = get_joystick_axis(2)

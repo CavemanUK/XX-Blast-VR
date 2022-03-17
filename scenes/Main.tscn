@@ -18,12 +18,12 @@ panorama = ExtResource( 1 )
 [sub_resource type="Environment" id=1]
 background_mode = 2
 background_sky = SubResource( 2 )
+background_energy = 1.2
 ambient_light_sky_contribution = 0.0
 fog_enabled = true
 fog_color = Color( 0, 0, 0, 1 )
 fog_depth_end = 200.0
 dof_blur_far_distance = 50.0
-glow_enabled = true
 glow_intensity = 1.62
 glow_strength = 0.38
 glow_bloom = 0.15
@@ -43,18 +43,7 @@ refresh_rate = 0.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -0.723545 )
 far = 224.4
 
-[node name="Cache" type="Spatial" parent="FPController/ARVRCamera" index="0"]
-transform = Transform( 0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, 0, 0, -50 )
-
-[node name="Bullet" parent="FPController/ARVRCamera/Cache" instance=ExtResource( 6 )]
-
-[node name="KillParticles" parent="FPController/ARVRCamera/Cache" instance=ExtResource( 8 )]
-
-[node name="enemy1" parent="FPController/ARVRCamera/Cache" instance=ExtResource( 9 )]
-
-[node name="EnemyBullet" parent="FPController/ARVRCamera/Cache" instance=ExtResource( 11 )]
-
-[node name="BackgroundMusic" type="AudioStreamPlayer3D" parent="FPController/ARVRCamera" index="1"]
+[node name="BackgroundMusic" type="AudioStreamPlayer3D" parent="FPController/ARVRCamera" index="0"]
 stream = ExtResource( 7 )
 unit_db = 13.0
 
@@ -63,10 +52,6 @@ visible = true
 
 [node name="RightHandController" parent="FPController" index="3"]
 visible = true
-
-[node name="player" parent="FPController" instance=ExtResource( 2 )]
-transform = Transform( 0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 3.63984, 1.44824, -8.32693 )
-visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
@@ -83,5 +68,20 @@ shadow_color = Color( 1, 1, 1, 1 )
 
 [node name="EnemySpawner" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200 )
+
+[node name="player" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 3.63984, 1.44824, 13.6268 )
+visible = false
+
+[node name="Cache" type="Spatial" parent="."]
+transform = Transform( 0.001, 0, 0, 0, 0.001, 0, 0, 0, 0.001, 0, 1.8, -28.7698 )
+
+[node name="Bullet" parent="Cache" instance=ExtResource( 6 )]
+
+[node name="KillParticles" parent="Cache" instance=ExtResource( 8 )]
+
+[node name="enemy1" parent="Cache" instance=ExtResource( 9 )]
+
+[node name="EnemyBullet" parent="Cache" instance=ExtResource( 11 )]
 
 [editable path="FPController"]

@@ -18,7 +18,7 @@ func _ready():
 	
 func _physics_process(_delta):
 	# Check if running in VR mode or Window and detect controls as appropriate
-	if $"../../FPController".inVR != true:
+	if $"../FPController".inVR != true:
 		if Input.is_action_just_released("ui_select"):
 			_fire_bullet()
 		inputVector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -40,3 +40,7 @@ func _fire_bullet():
 		var bullet = Bullet.instance()
 		main.add_child(bullet)
 		bullet.global_transform.origin = i.global_transform.origin
+
+
+func _on_Area_body_entered(body):
+	print_debug(body.name)
