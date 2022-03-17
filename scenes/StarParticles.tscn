@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="PointMesh" id=1]
+
+[node name="StarParticles" type="Spatial"]
+
+[node name="CPUParticles" type="CPUParticles" parent="."]
+amount = 300
+lifetime = 50.0
+preprocess = 10.7
+speed_scale = 2.0
+lifetime_randomness = 0.72
+mesh = SubResource( 1 )
+emission_shape = 2
+emission_box_extents = Vector3( 50, 50, 10 )
+gravity = Vector3( 0, 0, 10 )
+color = Color( 2, 2, 2, 1 )

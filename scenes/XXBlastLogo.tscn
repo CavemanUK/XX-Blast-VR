@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://images/xxblastlogo.png" type="Texture" id=1]
+
+[node name="XXBlastLogo" type="Spatial"]
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 1920, 1080 )
+transparent_bg = true
+usage = 3
+physics_object_picking = true
+
+[node name="Sprite3D" type="Sprite3D" parent="Viewport"]
+alpha_cut = 2
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 1920, 1080 )
