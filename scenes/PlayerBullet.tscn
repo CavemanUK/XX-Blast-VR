@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/Bullet.gd" type="Script" id=1]
+[ext_resource path="res://scripts/PlayerBullet.gd" type="Script" id=1]
 [ext_resource path="res://sounds/playershoot1.wav" type="AudioStream" id=2]
 
 [sub_resource type="CapsuleShape" id=3]
@@ -44,11 +44,6 @@ light_energy = 3.06
 light_indirect_energy = 5.53
 omni_range = 8.5
 
-[node name="LightTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-autostart = true
-
 [node name="BulletSound" type="AudioStreamPlayer3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, -1.70912 )
 stream = ExtResource( 2 )
@@ -60,5 +55,4 @@ one_shot = true
 autostart = true
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
-[connection signal="timeout" from="LightTimer" to="." method="_on_LightTimer_timeout"]
 [connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]

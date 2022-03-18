@@ -5,7 +5,6 @@ var speed = rand_range(15,30)
 
 onready var main = get_tree().current_scene
 onready var player = $"../Player"
-var Bullet = preload("res://scenes/EnemyBullet.tscn")
 
 func _ready():
 	#set a random timer for the gun to fire
@@ -17,7 +16,7 @@ func _physics_process(_delta):
 		queue_free()
 		
 func _spawn_bullet():
-	var bullet = Bullet.instance()
+	var bullet = Preloads.EnemyBullet.instance()
 	#bullet.look_at(player.global_transform.origin, global_transform.basis.y)
 	
 	main.add_child(bullet)

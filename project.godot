@@ -22,7 +22,13 @@ _global_script_class_icons={
 
 config/name="XX Blast VR"
 run/main_scene="res://scenes/Main.tscn"
+boot_splash/image="res://images/xxblastlogo.png"
+boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://images/xxblastlogo.png"
+
+[autoload]
+
+Preloads="*res://singletons/Preloads.gd"
 
 [editor_plugins]
 
@@ -44,4 +50,5 @@ common/enable_pause_aware_picking=true
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://tres/default_env.tres"
