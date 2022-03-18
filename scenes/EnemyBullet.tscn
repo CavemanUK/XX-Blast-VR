@@ -5,7 +5,7 @@
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.160784, 0.980392, 0, 1 )
 emission_enabled = true
-emission = Color( 0.21, 5, 0, 1 )
+emission = Color( 0.0858399, 0.858398, 0, 1 )
 emission_energy = 3.77
 emission_operator = 0
 emission_on_uv2 = false
@@ -28,6 +28,8 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="Area" type="Area" parent="."]
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 3 )
@@ -38,15 +40,5 @@ wait_time = 6.0
 one_shot = true
 autostart = true
 
-[node name="LightTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-autostart = true
-
-[node name="OmniLight" type="OmniLight" parent="."]
-light_color = Color( 0.407843, 1, 0, 1 )
-light_energy = 3.6
-light_indirect_energy = 5.53
-
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
 [connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]
-[connection signal="timeout" from="LightTimer" to="." method="_on_LightTimer_timeout"]

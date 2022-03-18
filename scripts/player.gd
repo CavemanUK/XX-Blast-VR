@@ -8,7 +8,7 @@ var velo = Vector3()
 
 onready var guns = [$Gun0,$Gun1]
 onready var main = get_tree().current_scene
-onready var Bullet = preload("res://scenes/Bullet.tscn")
+onready var Bullet = preload("res://scenes/PlayerBullet.tscn")
 
 var controllerInput = Vector2()
 
@@ -48,5 +48,3 @@ func _fire_bullet():
 		bullet.global_transform.origin = i.global_transform.origin
 
 
-func _on_Area_body_entered(body):
-	print_debug(body.name)

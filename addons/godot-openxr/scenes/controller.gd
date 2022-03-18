@@ -24,7 +24,7 @@ func updateShipTitle(myString):
 	pass
 	
 func _input(event):
-	var player = $"../../player"
+	var player = $"../../Player"
 	var joystick_vector = Vector2(get_joystick_axis(0), get_joystick_axis(1))
 	joystick_vector = joystick_vector.normalized().round()
 	var trigger_throttle = get_joystick_axis(2)
@@ -38,3 +38,12 @@ func _input(event):
 	if trigger_throttle < 1:
 		if trigger_triggered == true:
 			trigger_triggered = false
+
+
+
+func rumblePulse(time = 1):
+	rumble = .5
+	yield(get_tree().create_timer(time), "timeout")
+	rumble = 0
+	pass
+	
