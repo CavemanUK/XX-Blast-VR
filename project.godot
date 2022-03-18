@@ -28,7 +28,11 @@ config/icon="res://images/xxblastlogo.png"
 
 [autoload]
 
-Preloads="*res://singletons/Preloads.gd"
+Globals="*res://singletons/Globals.gd"
+EnemyPool="*res://singletons/EnemyPool.gd"
+EnemyLaserPool="*res://singletons/EnemyLaserPool.gd"
+PlayerLaserPool="*res://singletons/PlayerLaserPool.gd"
+AsteroidPool="*res://singletons/AsteroidPool.gd"
 
 [editor_plugins]
 

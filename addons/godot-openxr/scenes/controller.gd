@@ -24,7 +24,7 @@ func updateShipTitle(myString):
 	pass
 	
 func _input(event):
-	var player = $"../../Player"
+	var player = $"../../GameWorld/Player"
 	var joystick_vector = Vector2(get_joystick_axis(0), get_joystick_axis(1))
 	joystick_vector = joystick_vector.normalized().round()
 	var trigger_throttle = get_joystick_axis(2)
@@ -33,7 +33,11 @@ func _input(event):
 	if trigger_throttle == 1:
 		if trigger_triggered != true:
 			trigger_triggered = true
-			player._fire_bullet()
+			if Globals.gameRunning:
+				player._fire_bullet()
+			else:
+				$"../../GameWorld".startGame()
+	
 	
 	if trigger_throttle < 1:
 		if trigger_triggered == true:

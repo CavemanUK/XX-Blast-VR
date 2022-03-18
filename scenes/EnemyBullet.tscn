@@ -17,7 +17,7 @@ material = SubResource( 1 )
 radius = 1.1
 
 [node name="EnemyBullet" type="KinematicBody"]
-transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.8, 0, 0, 0 )
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_editor_description_": "	"

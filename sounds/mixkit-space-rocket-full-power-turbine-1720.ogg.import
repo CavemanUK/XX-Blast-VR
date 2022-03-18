@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/mixkit-space-rocket-full-power-turbine-1720.ogg-1e3e2722c2cb50a90957006ee578d61e.oggstr"
+
+[deps]
+
+source_file="res://sounds/mixkit-space-rocket-full-power-turbine-1720.ogg"
+dest_files=[ "res://.import/mixkit-space-rocket-full-power-turbine-1720.ogg-1e3e2722c2cb50a90957006ee578d61e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
