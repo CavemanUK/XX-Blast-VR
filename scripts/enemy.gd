@@ -40,7 +40,8 @@ func deactivate():
 	global_transform.origin = Vector3(5000,5000,5000)
 	active = false
 	$FiringTimer.stop()
-	remove_from_group("ACTIVE_ENEMIES")
+	if self.is_in_group("ACTIVE_ENEMIES"):
+		remove_from_group("ACTIVE_ENEMIES")
 	$AudioStreamPlayer3D.stop()
 
 func activate():

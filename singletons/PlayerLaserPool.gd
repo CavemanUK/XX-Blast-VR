@@ -15,7 +15,6 @@ func _ready():
 func getNextBullet():
 	for i in MAX_BULLETS:
 		if PlayerBullets[i].active == false:
-			print_debug("assigning bullet "+str(i))
 			return PlayerBullets[i]
 	return false
 

@@ -33,9 +33,10 @@ transform = Transform( 1.37751, 0.00126251, -0.00149956, -0.00173867, 0.999999, 
 mesh = SubResource( 1 )
 material/0 = SubResource( 5 )
 
-[node name="Area" type="Area" parent="."]
+[node name="Area" type="Area" parent="." groups=["Asteroid"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
+[node name="CollisionShape" type="CollisionShape" parent="Area" groups=["Asteroid"]]
 transform = Transform( 1.37751, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 2 )
 

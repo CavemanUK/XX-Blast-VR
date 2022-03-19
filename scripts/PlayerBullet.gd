@@ -17,6 +17,8 @@ func _on_LifeTimer_timeout():
 func _on_Area_body_entered(body):
 	if active:
 		
+		print_debug("Collided with " + body.name)
+		
 		var main = get_tree().current_scene
 		
 		if body.is_in_group("Enemy"):
@@ -37,7 +39,6 @@ func deactivate():
 	visible = false
 	global_transform.origin = Vector3(5000,5000,5000)
 	active = false
-	
 	$LifeTimer.stop()
 
 func activate():

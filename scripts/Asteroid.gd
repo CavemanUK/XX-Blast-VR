@@ -37,7 +37,6 @@ func deactivate():
 	visible = false
 	global_transform.origin = Vector3(5000,5000,5000)
 	active = false
-	print_debug("Asteroid Killed")
 	remove_from_group("ACTIVE_ASTEROIDS")
 
 func activate(spawnPoint):
@@ -47,13 +46,12 @@ func activate(spawnPoint):
 	asteroid_scale = rand_range(0.01,0.4)
 	transform.origin = spawnPoint
 	set_scale(Vector3(asteroid_scale,asteroid_scale,asteroid_scale))
-	print_debug("New Asteroid")
 	active = true
 	visible = true
 	add_to_group("ACTIVE_ASTEROIDS")
 
-
 func _on_Area_body_entered(body):
 	if active:
+		print(self.name + ": I got hit by " + body.name)
 		if body.is_in_group("ACTIVE_ASTEROIDS"):
 			deactivate()
