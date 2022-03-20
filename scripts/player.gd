@@ -14,8 +14,11 @@ onready var main = get_tree().current_scene
 onready var PlayerBullet = Globals.PlayerBullet
 
 var controllerInput = Vector2()
+var resetPosition
+signal player_killed
 
 func _ready():
+	resetPosition = transform
 	print("Player Ready")
 
 func _physics_process(_delta):
@@ -51,7 +54,7 @@ func _physics_process(_delta):
 			_fire_bullet()
 
 func _fire_bullet():
-	if Globals.gameRunning:
+	if Globals.gameRunning and $Ship.visible:
 		if gunCooldown <= 0:
 			for i in guns:
 				var bullet = PlayerBullet.instance()
@@ -60,11 +63,29 @@ func _fire_bullet():
 				bullet.global_transform.origin = i.global_transform.origin
 			
 			gunCooldown = 12
-			
-func reset():
-	transform.origin = Vector3(7,1.5,9)
-	visible = true
 
 func _on_CollisionArea_body_entered(body):
-	if Globals.gameRunning:
-		print("Player Got Hit by "+body.name)
+	if Globals.gameRunning and $Ship.visible:
+		emit_signal("player_killed")
+		playerDeath()
+		
+		if body.is_in_group("PlayerBullet"):
+			body.queue_free()
+
+func playerDeath():
+	hideShip()
+	for i in 5:
+		var explosion = get_node("Explosion/CPUParticles"+str(i))
+		var explosionSound = get_node("Explosion/CPUParticles"+str(i)+"/ExplosionSound")
+		explosion.emitting = true
+		explosionSound.play()
+		
+		yield(get_tree().create_timer(.1), "timeout")
+	
+func hideShip():
+	$Ship.visible = false
+
+func resetShip():
+	transform = resetPosition
+	$Ship.visible = true
+	visible = true

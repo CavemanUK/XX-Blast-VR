@@ -27,11 +27,18 @@ func _spawn_bullet():
 	bullet.speed = speed + 4
 	
 func _on_FiringTimer_timeout():
-	if transform.origin.z > -300 and transform.origin.z < 0:
-		_spawn_bullet()
-		# set a new random time for the next bullet
-		$FiringTimer.wait_time = rand_range(1,5)
-		$FiringTimer.start()
+	
+	# check that enemy is within a decent range of player, but not too close.
+	var distance_to_player = translation.distance_to(player.global_transform.origin)
+	
+	if distance_to_player > 90 and distance_to_player < 300:
+		
+		# check that enemy is in front of player and not flying away behind
+		if transform.origin.z < 0:
+			_spawn_bullet()
+			# set a new random time for the next bullet
+			$FiringTimer.wait_time = rand_range(1,5)
+			$FiringTimer.start()
 
 func _on_Area_body_entered(body):
 	if body.is_in_group("PlayerBullet"):

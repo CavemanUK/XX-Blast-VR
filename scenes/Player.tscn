@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Blender Imports/player/Windscreen.material" type="Material" id=1]
 [ext_resource path="res://Blender Imports/player/RearEngine.material" type="Material" id=2]
 [ext_resource path="res://Blender Imports/player/BaseMaterial.material" type="Material" id=3]
 [ext_resource path="res://scripts/Player.gd" type="Script" id=4]
 [ext_resource path="res://Blender Imports/player/NoseTip.material" type="Material" id=5]
+[ext_resource path="res://sounds/enemyExplosion.wav" type="AudioStream" id=6]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "xxblastship_MainShip"
@@ -125,7 +126,20 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 )
 }
 
-[sub_resource type="BoxShape" id=5]
+[sub_resource type="ConvexPolygonShape" id=9]
+points = PoolVector3Array( -3.24091, -0.539395, -0.510104, 0.580758, -1.10562, 4.72938, 0.619798, -1.28122, -4.73515, 0.660684, 1.59807, -0.124063, -3.00434, -0.158872, 0.929465, -2.9856, -0.922137, 0.847333, -0.387028, 0.996806, -1.49489, -0.38703, 0.996805, 1.49659, 0.0583702, -1.31382, 4.8463, 0.0583702, -1.31382, -4.84363, 1.01235, 0.0417904, -2.03165, -3.05464, -0.158872, -0.927765, 0.969541, -0.989369, 1.89339, 0.861455, 1.59807, -0.124063, 0.158545, -1.01226, -4.79425, 0.0583702, -1.16304, 4.94701, -3.09626, -0.881193, -0.80292, 0.619231, -1.23146, 4.83469, 0.944394, -0.975923, -1.91797, 0.960969, -0.298903, 1.98497, -1.02656, 0.865642, 0.542669, 0.660684, 1.59807, 0.124794, -1.02627, 0.867387, -0.542277, 0.0583702, -1.16304, -4.94531, 0.585586, -1.1091, -4.7409, -3.09325, -0.879611, 0.803377, 0.158545, -1.01226, 4.79595, -3.10452, -0.209038, 0.879112, -3.30571, -0.610648, 0.426909, -3.15481, -0.209038, -0.82706, -2.98483, -0.92169, -0.893788, 1.01235, 0.091956, -1.88059, -3.20603, -0.78926, -0.610978, -3.2028, -0.787802, 0.61172 )
+
+[sub_resource type="SpatialMaterial" id=6]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="CubeMesh" id=7]
+material = SubResource( 6 )
+size = Vector3( 1, 1, 1 )
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0, 0.325758, 0.575758, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.92559, 0.959961, 0.0337486, 1, 1, 0, 0, 1, 0, 0, 0, 1 )
 
 [node name="Player" type="KinematicBody"]
 collision_mask = 28
@@ -149,7 +163,133 @@ anims/RESET = SubResource( 4 )
 collision_mask = 28
 
 [node name="CollisionShape" type="CollisionShape" parent="CollisionArea"]
-transform = Transform( 6.06226, 0, 0, 0, 6.06226, 0, 0, 0, 6.06226, 0, 0, 0 )
-shape = SubResource( 5 )
+transform = Transform( 0.00311777, -0.000196315, -0.999999, -0.0857048, 0.999434, -0.000237372, 2.54629, 0.0336399, 0.00121647, 0, 0, 2.7711 )
+shape = SubResource( 9 )
+
+[node name="Explosion" type="Spatial" parent="."]
+
+[node name="CPUParticles0" type="CPUParticles" parent="Explosion"]
+emitting = false
+amount = 100
+lifetime = 0.16
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 7 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 8 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="Explosion/CPUParticles0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
+stream = ExtResource( 6 )
+unit_db = 20.0
+
+[node name="CPUParticles1" type="CPUParticles" parent="Explosion"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.468428, -0.355675, -3.56999 )
+emitting = false
+amount = 100
+lifetime = 0.16
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 7 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 8 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="Explosion/CPUParticles1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
+stream = ExtResource( 6 )
+unit_db = 20.0
+
+[node name="CPUParticles2" type="CPUParticles" parent="Explosion"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08884, -0.355675, 3.51748 )
+emitting = false
+amount = 100
+lifetime = 0.16
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 7 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 8 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="Explosion/CPUParticles2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
+stream = ExtResource( 6 )
+unit_db = 20.0
+
+[node name="CPUParticles3" type="CPUParticles" parent="Explosion"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.93086, 0.251904, 4.27292 )
+emitting = false
+amount = 100
+lifetime = 0.16
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 7 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 8 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="Explosion/CPUParticles3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
+stream = ExtResource( 6 )
+unit_db = 20.0
+
+[node name="CPUParticles4" type="CPUParticles" parent="Explosion"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0008, -0.475475, 1.17727 )
+emitting = false
+amount = 100
+lifetime = 0.63
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 7 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 8 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="Explosion/CPUParticles4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025219, -0.224318, 49.9491 )
+stream = ExtResource( 6 )
+unit_db = 20.0
 
 [connection signal="body_entered" from="CollisionArea" to="." method="_on_CollisionArea_body_entered"]
