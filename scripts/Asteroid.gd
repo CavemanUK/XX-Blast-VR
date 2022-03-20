@@ -6,7 +6,7 @@ signal asteroid_hit
 
 onready var heading = global_transform.basis.z 
 onready var main = get_tree().current_scene
-onready var player = $"../GameWorld/Player"
+onready var player = $"../../../GameWorld/Player"
 
 var rot_x_speed 	= rand_range(.2,.5)
 var rot_y_speed 	= rand_range(.2,.5)
@@ -17,7 +17,6 @@ var health = asteroid_scale * 30
 
 func _ready():
 	resize(asteroid_scale)
-	print("Health:" + str(health))
 	
 var rot_value = Vector3()
 

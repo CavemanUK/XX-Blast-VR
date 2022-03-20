@@ -57,8 +57,6 @@ surfaces/3 = {
 "vertex_count": 270
 }
 
-[sub_resource type="BoxShape" id=2]
-
 [sub_resource type="Animation" id=3]
 resource_name = "New Anim"
 length = 4.0
@@ -127,22 +125,15 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 )
 }
 
+[sub_resource type="ConvexPolygonShape" id=5]
+points = PoolVector3Array( -3.24091, -0.539395, -0.510104, 0.580758, -1.10562, 4.72938, 0.619798, -1.28122, -4.73515, 0.660684, 1.59807, -0.124063, -3.00434, -0.158872, 0.929465, -2.9856, -0.922137, 0.847333, -0.387028, 0.996806, -1.49489, -0.38703, 0.996805, 1.49659, 0.0583702, -1.31382, 4.8463, 0.0583702, -1.31382, -4.84363, 1.01235, 0.0417904, -2.03165, -3.05464, -0.158872, -0.927765, 0.969541, -0.989369, 1.89339, 0.861455, 1.59807, -0.124063, 0.158545, -1.01226, -4.79425, 0.0583702, -1.16304, 4.94701, -3.09626, -0.881193, -0.80292, 0.619231, -1.23146, 4.83469, 0.944394, -0.975923, -1.91797, 0.960969, -0.298903, 1.98497, -1.02656, 0.865642, 0.542669, 0.660684, 1.59807, 0.124794, -1.02627, 0.867387, -0.542277, 0.0583702, -1.16304, -4.94531, 0.585586, -1.1091, -4.7409, -3.09325, -0.879611, 0.803377, 0.158545, -1.01226, 4.79595, -3.10452, -0.209038, 0.879112, -3.30571, -0.610648, 0.426909, -3.15481, -0.209038, -0.82706, -2.98483, -0.92169, -0.893788, 1.01235, 0.091956, -1.88059, -3.20603, -0.78926, -0.610978, -3.2028, -0.787802, 0.61172 )
+
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 4 )
 
-[node name="Ship" type="MeshInstance" parent="."]
+[node name="Ship" type="MeshInstance" parent="." groups=["Player"]]
 transform = Transform( 0.00311777, -0.000196315, -0.999999, -0.0857048, 0.999434, -0.000237372, 2.54629, 0.0336399, 0.00121647, 0, 0, 2.7711 )
 mesh = SubResource( 1 )
-material/0 = null
-material/1 = null
-material/2 = null
-material/3 = null
-
-[node name="Area" type="Area" parent="."]
-
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 4.65008, 0, 0, 0, 1, 0, 0, 0, 4.65008, 0, 0, 0 )
-shape = SubResource( 2 )
 
 [node name="Gun0" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.89222, -0.706434, 1.05552 )
@@ -153,3 +144,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.892, -0.706, 1.056 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 "anims/New Anim" = SubResource( 3 )
 anims/RESET = SubResource( 4 )
+
+[node name="Area" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 0.00311777, -0.000196315, -0.999999, -0.0857048, 0.999434, -0.000237372, 2.54629, 0.0336399, 0.00121647, 0, 0, 2.7711 )
+shape = SubResource( 5 )
+
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]

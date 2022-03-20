@@ -2,13 +2,11 @@ extends Spatial
 
 const MAX_ASTEROIDS = 20
 
-onready var main = get_tree().current_scene
-
 func _on_Timer_timeout():
 	var numAsteroids = get_tree().get_nodes_in_group("Asteroid").size()
 	if numAsteroids < MAX_ASTEROIDS:
 		var asteroid = Globals.Asteroid.instance()
-		main.add_child(asteroid)
+		add_child(asteroid)
 		asteroid.transform.origin =  transform.origin + Vector3(rand_range(-250,250),rand_range(-250,250),rand_range(-200,-100))
 		asteroid.connect("asteroid_hit", self, "processAsteroidHit")
 
@@ -25,14 +23,13 @@ func processAsteroidHit(asteroid):
 	var new_scale = asteroid_scale.x / 2
 	
 	# if asteroids are really small, no point creating fragments
-	print("new scale "+str(new_scale))
 	if new_scale < .05:
 		return
 
 	# generate new fragments half the size of the original asteroid
 	for i in 1:
 		var newasteroid = Globals.Asteroid.instance()
-		main.add_child(newasteroid)
+		add_child(newasteroid)
 		newasteroid.resize(new_scale)
 		newasteroid.transform.origin = asteroid_spawnPoint[i].global_transform.origin
 		newasteroid.heading = asteroid_heading
@@ -50,7 +47,7 @@ func processAsteroidHit(asteroid):
 
 func blowupAsteroid(asteroid):
 	var explosion = Globals.EnemyExplosion.instance()
-	main.add_child(explosion)
+	add_child(explosion)
 	explosion.transform.origin = asteroid.transform.origin
 	asteroid.queue_free()
 	

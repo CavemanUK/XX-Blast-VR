@@ -60,3 +60,7 @@ func _fire_bullet():
 func reset():
 	transform.origin = Vector3(7,1.5,9)
 	visible = true
+
+
+func _on_Area_body_entered(body):
+	print("I got hit by "+body.name)
