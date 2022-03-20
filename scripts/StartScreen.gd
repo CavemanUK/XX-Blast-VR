@@ -1,15 +1,4 @@
 extends Spatial
 
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-func Hide():
-	$"xxblast logo/AnimationPlayer".play("Fade Away")
+func Kill():
+	queue_free()

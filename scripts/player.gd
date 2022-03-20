@@ -1,21 +1,27 @@
 extends KinematicBody
 
-
 const MAXSPEED = 20
 const ACCELERATION = 1
+
+var gunCooldown = 0
+
 var inputVector = Vector3()
 var velo = Vector3()
 
 onready var guns = [$Gun0,$Gun1]
 onready var main = get_tree().current_scene
+onready var PlayerBullet = Globals.PlayerBullet
 
 var controllerInput = Vector2()
+
+func _ready():
+	_fire_bullet()
 
 func _physics_process(_delta):
 	if Globals.gameRunning:
 		# Check if running in VR mode or Window and detect controls as appropriate
 		if $"../../FPController".inVR != true:
-			if Input.is_action_just_released("ui_select"):
+			if Input.is_action_pressed("ui_select"):
 				_fire_bullet()
 			inputVector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 			inputVector.y = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
@@ -34,17 +40,23 @@ func _physics_process(_delta):
 			$AnimationPlayer.play("New Anim")
 		else:
 			$AnimationPlayer.stop()
-	
+		
+		if gunCooldown >0:
+			gunCooldown -= 1
+
 		var _result = move_and_slide(velo)
 
 func _fire_bullet():
 	if Globals.gameRunning:
-		for i in guns:
-			var bullet = PlayerLaserPool.getNextBullet()
-			if bullet:
+		if gunCooldown <= 0:
+			for i in guns:
+				var bullet = PlayerBullet.instance()
+				main.add_child(bullet)
+			
 				bullet.global_transform.origin = i.global_transform.origin
-				bullet.activate()
-
+			
+			gunCooldown = 12
+			
 func reset():
 	transform.origin = Vector3(7,1.5,9)
 	visible = true

@@ -25,7 +25,6 @@ __meta__ = {
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 2 )
-material/0 = null
 
 [node name="Area" type="Area" parent="."]
 collision_layer = 2
