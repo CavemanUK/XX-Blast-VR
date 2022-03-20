@@ -44,15 +44,22 @@ func resize(scale):
 
 func _on_Area_body_entered(body):
 	if body != self:
-		if body.is_in_group("PlayerBullet") and time_alive > 2:
+		# allow Asteroid to live at least 2 seconds before worrying about collision
+		if time_alive > 2:
+			if body.is_in_group("PlayerBullet"):
 			
-			# Kill the bullet
-			body.queue_free()
+				# Kill the bullet
+				body.queue_free()
 			
-			if health > 1:
-				# take away some health
-				health -= 1
-				return
+				if health > 1:
+					# take away some health
+					health -= 1
+					return
 			
-			# health is less than 1.. time to die
-			emit_signal("asteroid_dead", self)
+				# health is less than 1.. time to die
+				emit_signal("asteroid_dead", self)
+		
+			if body.is_in_group("Asteroid"):
+				print("Asteroids collided")
+				emit_signal("asteroid_dead", self)
+			

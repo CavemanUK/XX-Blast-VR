@@ -4,6 +4,7 @@ const MAXSPEED = 20
 const ACCELERATION = 1
 
 var gunCooldown = 0
+var autofire = false
 
 var inputVector = Vector3()
 var velo = Vector3()
@@ -45,6 +46,9 @@ func _physics_process(_delta):
 			gunCooldown -= 1
 
 		var _result = move_and_slide(velo)
+		
+		if autofire:
+			_fire_bullet()
 
 func _fire_bullet():
 	if Globals.gameRunning:

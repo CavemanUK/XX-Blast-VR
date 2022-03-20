@@ -8,5 +8,5 @@ func _process(_delta):
 func startGame():
 	$Player.reset()
 	Globals.gameRunning = true
-	$AudioStreamPlayer3D.play()
+	$"../FPController/AudioStreamPlayer3D".play()
 	$"../StartScreen".Kill()

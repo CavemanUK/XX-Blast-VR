@@ -3,8 +3,6 @@ extends ARVRController
 signal activated
 signal deactivated
 
-var trigger_triggered := false
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if get_is_active():
@@ -31,19 +29,12 @@ func _input(event):
 	player.controllerInput = joystick_vector
 	
 	if trigger_throttle == 1:
-		if trigger_triggered != true:
-			trigger_triggered = true
-			if Globals.gameRunning:
-				player._fire_bullet()
-			else:
-				$"../../GameWorld".startGame()
-	
-	
-	if trigger_throttle < 1:
-		if trigger_triggered == true:
-			trigger_triggered = false
-
-
+		if Globals.gameRunning:
+			player.autofire = true
+		else:
+			$"../../GameWorld".startGame()
+	else:
+		player.autofire = false
 
 func rumblePulse(time = 1):
 	rumble = .5

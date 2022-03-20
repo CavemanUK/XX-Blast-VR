@@ -1,6 +1,6 @@
 extends Spatial
 
-const MAX_ASTEROIDS = 40
+const MAX_ASTEROIDS = 200
 
 func _on_Timer_timeout():
 	var numAsteroids = get_tree().get_nodes_in_group("Asteroid").size()
@@ -12,10 +12,12 @@ func _on_Timer_timeout():
 		asteroid.connect("asteroid_dead", self, "processAsteroidDead")
 
 func processAsteroidDead(asteroid):
+	randomize()
 	if asteroid.alive == true:
 		asteroid.alive = false
 	
 		var asteroid_scale = asteroid.get_scale()
+		var asteroid_speed = asteroid.speed
 		var asteroid_spawnPoint = {}
 		var asteroid_rotation = asteroid.rotation
 	
@@ -26,25 +28,34 @@ func processAsteroidDead(asteroid):
 		yield(get_tree().create_timer(0.1), "timeout")
 		var new_scale = asteroid_scale.x / 2
 	
-		#if asteroids are really small, no point creating fragments
-		#if new_scale < .02:
-		#	return
+		# if asteroids are really small, no point creating fragments
+		if new_scale < .02:
+			return
 
 		# generate new fragments half the size of the original asteroid
 		for i in 2:
 			var newasteroid = Globals.Asteroid.instance()
 			add_child(newasteroid)
 			newasteroid.resize(new_scale)
+			
+			# place new asteroid on one of the spawn points so new fragments don't hit each other
 			newasteroid.global_transform.origin = asteroid_spawnPoint[i]
+			
+			# make smaller fragment point in same direction as starting point
 			newasteroid.rotation = asteroid_rotation
-			#newasteroid.look_at(Globals.Player.global_transform.origin, Vector3.UP)
+			
+			# set asteroids speed to be slightly faster because of blast
+			newasteroid.speed = asteroid_speed + 10 
+			
 			newasteroid.connect("asteroid_dead", self, "processAsteroidDead")
 		
-			# send new asteroid off in slightly different direction
+			# now lets send new asteroid off in slightly different direction
+			var rand_x = rand_range(45,90)
+			var rand_y = rand_range(45,90)
 			if i == 0:
-				newasteroid.rotation_degrees -= Vector3(rand_range(45,90),rand_range(45,90),rand_range(45,90))
+				newasteroid.rotation_degrees += Vector3(rand_x,rand_y,0)
 			else:
-				newasteroid.rotation_degrees += Vector3(rand_range(45,90),rand_range(45,90),rand_range(45,90))
+				newasteroid.rotation_degrees += Vector3(-rand_x,-rand_y,0)
 		
 func blowupAsteroid(asteroid):
 	var explosion = Globals.AsteroidExplosion.instance()
