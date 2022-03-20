@@ -17,7 +17,8 @@ panorama = ExtResource( 1 )
 background_mode = 2
 background_sky = SubResource( 2 )
 background_sky_orientation = Basis( 1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025 )
-ambient_light_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+ambient_light_color = Color( 0.898039, 0.898039, 0.898039, 1 )
+ambient_light_energy = 9.41
 fog_enabled = true
 fog_color = Color( 0, 0, 0, 1 )
 fog_sun_color = Color( 0, 0, 0, 1 )
@@ -72,9 +73,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -62.3247 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.757914, -0.294379, 0.582157, 0.179485, 0.952053, 0.247751, -0.627177, -0.0832851, 0.774411, -0.207012, 0, -4.56861 )
-light_energy = 1.988
-light_indirect_energy = 2.778
-light_bake_mode = 2
-shadow_color = Color( 1, 1, 1, 1 )
 
 [editable path="FPController"]
