@@ -15,7 +15,7 @@ onready var PlayerBullet = Globals.PlayerBullet
 var controllerInput = Vector2()
 
 func _ready():
-	_fire_bullet()
+	print("Player Ready")
 
 func _physics_process(_delta):
 	if Globals.gameRunning:
@@ -61,6 +61,6 @@ func reset():
 	transform.origin = Vector3(7,1.5,9)
 	visible = true
 
-
-func _on_Area_body_entered(body):
-	print("I got hit by "+body.name)
+func _on_CollisionArea_body_entered(body):
+	if Globals.gameRunning:
+		print("Player Got Hit by "+body.name)

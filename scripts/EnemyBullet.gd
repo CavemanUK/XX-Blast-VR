@@ -1,7 +1,7 @@
 extends KinematicBody
 
 #define default speed
-const DEFAULT_SPEED = 2
+const DEFAULT_SPEED = 4
 var speed = DEFAULT_SPEED
 onready var player = $"../GameWorld/Player"
 
@@ -21,7 +21,7 @@ func _on_LifeTimer_timeout():
 # check if enemy bullet hit an enemy
 # if so, remove bullet but don't do anything to the enemy unit	
 func _on_Area_body_entered(body):
-	print("Hit "+str(body.name))
+	print("Enemy Bullet Hit "+str(body.name))
 	if body.is_in_group("Player"):
 		print("hit player")
 		

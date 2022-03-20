@@ -24,7 +24,7 @@ func _spawn_bullet():
 	bullet.global_transform.origin = $Gun.global_transform.origin
 	bullet.look_at(player.global_transform.origin, Vector3.UP)
 	# make sure bullet speed is always proportionate to enemy speed
-	bullet.speed = speed + 2
+	bullet.speed = speed + 4
 	
 func _on_FiringTimer_timeout():
 	if transform.origin.z > -300 and transform.origin.z < 0:
@@ -35,8 +35,10 @@ func _on_FiringTimer_timeout():
 
 func _on_Area_body_entered(body):
 	if body.is_in_group("PlayerBullet"):
-		var explosion = Globals.EnemyExplosion.instance()
-		main.add_child(explosion)
-		explosion.transform.origin = transform.origin
-		body.queue_free()
-		queue_free()
+		die()
+
+func die():
+	var explosion = Globals.EnemyExplosion.instance()
+	main.add_child(explosion)
+	explosion.transform.origin = transform.origin
+	queue_free()

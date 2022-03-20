@@ -18,7 +18,7 @@ func _physics_process(_delta):
 func _on_LifeTimer_timeout():
 	queue_free()
 
-func _on_Area_body_entered(body):		
+func _on_Area_body_entered(body):
 	if body.is_in_group("Asteroid"):
 		# player laser has no effect on asteroids and is absorbed
 		queue_free()
