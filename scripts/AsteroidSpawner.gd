@@ -19,10 +19,11 @@ func processAsteroidDead(asteroid):
 		var asteroid_spawnPoint = {}
 		var asteroid_rotation = asteroid.rotation
 	
-		asteroid_spawnPoint[0] = asteroid.get_node("spawnPoint0")
-		asteroid_spawnPoint[1] = asteroid.get_node("spawnPoint1")
+		asteroid_spawnPoint[0] = asteroid.get_node("spawnPoint0").global_transform.origin
+		asteroid_spawnPoint[1] = asteroid.get_node("spawnPoint1").global_transform.origin
 	
 		blowupAsteroid(asteroid)
+		yield(get_tree().create_timer(0.1), "timeout")
 		var new_scale = asteroid_scale.x / 2
 	
 		#if asteroids are really small, no point creating fragments
@@ -34,20 +35,22 @@ func processAsteroidDead(asteroid):
 			var newasteroid = Globals.Asteroid.instance()
 			add_child(newasteroid)
 			newasteroid.resize(new_scale)
-			newasteroid.global_transform.origin = asteroid_spawnPoint[i].global_transform.origin
+			newasteroid.global_transform.origin = asteroid_spawnPoint[i]
 			newasteroid.rotation = asteroid_rotation
 			#newasteroid.look_at(Globals.Player.global_transform.origin, Vector3.UP)
 			newasteroid.connect("asteroid_dead", self, "processAsteroidDead")
 		
 			# send new asteroid off in slightly different direction
 			if i == 0:
-				newasteroid.rotation_degrees -= Vector3(rand_range(30,60),rand_range(30,60),0)
+				newasteroid.rotation_degrees -= Vector3(rand_range(45,90),rand_range(45,90),rand_range(45,90))
 			else:
-				newasteroid.rotation_degrees += Vector3(rand_range(30,60),rand_range(30,60),0)
+				newasteroid.rotation_degrees += Vector3(rand_range(45,90),rand_range(45,90),rand_range(45,90))
 		
 func blowupAsteroid(asteroid):
-	var explosion = Globals.EnemyExplosion.instance()
+	var explosion = Globals.AsteroidExplosion.instance()
 	add_child(explosion)
+	explosion.scale = asteroid.scale
 	explosion.transform.origin = asteroid.transform.origin
+	yield(get_tree().create_timer(0.1), "timeout")
 	asteroid.queue_free()
 	

@@ -54,5 +54,5 @@ func _on_Area_body_entered(body):
 				health -= 1
 				return
 			
-			# health is less that 1.. time to die
+			# health is less than 1.. time to die
 			emit_signal("asteroid_dead", self)
