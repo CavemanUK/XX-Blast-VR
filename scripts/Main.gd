@@ -1,7 +1,8 @@
 extends Spatial
 	
 func _ready():
-	$Player.connect("player_killed", self, "handlePlayerDeath")
+	if $Player.connect("player_killed", self, "handlePlayerDeath"):
+		print("connected to player signal")
 
 func _process(_delta):
 	if Globals.gameRunning == false:

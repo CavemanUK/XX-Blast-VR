@@ -42,7 +42,8 @@ var controllerInput = Vector2()
 signal player_killed
 
 func _ready():
-	controllerNode.connect("controller_button_pressed", self, "fire_missile_at_nearest")
+	if controllerNode:
+		controllerNode.connect("controller_button_pressed", self, "fire_missile_at_nearest")
 
 func _physics_process(_delta):
 	if Globals.gameRunning:
@@ -154,6 +155,9 @@ func _on_CollisionArea_body_entered(body):
 		
 		# call playerDeath function to handle the death animation etc
 		playerDeath()
+		
+		# kill the colliding body. This is untidy and needs a better solution
+		body.queue_free()
 
 func playerDeath():
 	
