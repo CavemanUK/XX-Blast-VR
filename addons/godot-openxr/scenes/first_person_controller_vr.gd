@@ -74,13 +74,6 @@ func _get_xr_viewport() -> Viewport:
 	else:
 		return get_viewport()
 
-func _start_passthrough():
-	if start_passthrough:
-		# make sure our viewports background is transparent
-		_get_xr_viewport().transparent_bg = true
-
-		# enable our passthrough
-		$Configuration.start_passthrough()
 
 func _connect_plugin_signals():
 	ARVRServer.connect("openxr_session_begun", self, "_on_openxr_session_begun")
@@ -112,5 +105,4 @@ func _on_openxr_visible_state():
 	emit_signal("visible_state")
 
 func _on_openxr_pose_recentered():
-	print("OpenXR pose recentered")
 	emit_signal("pose_recentered")

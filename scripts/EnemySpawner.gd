@@ -1,6 +1,12 @@
 extends Spatial
 
-const MAX_ENEMIES = 30
+#const MAX_ENEMIES = 30
+#timerout should be 2
+
+
+const MAX_ENEMIES = 200
+
+
 
 onready var main = get_tree().current_scene
 onready var Enemy = Globals.Enemy

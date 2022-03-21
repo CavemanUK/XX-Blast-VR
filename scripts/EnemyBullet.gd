@@ -29,6 +29,6 @@ func _on_Area_body_entered(body):
 
 
 
-func _on_CollisionArea_body_entered(body):
+func _on_CollisionArea_body_entered(_body):
 	print("enemy bullet hit something")
 	queue_free()

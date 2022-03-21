@@ -2,12 +2,16 @@ extends Node
 
 # Preload all the game assets
 
-onready var EnemyExplosion = preload("res://scenes/EnemyExplosion.tscn")
 onready var AsteroidExplosion = preload("res://scenes/AsteroidExplosion.tscn")
-onready var PlayerBullet = preload("res://scenes/PlayerBullet.tscn")
 onready var Asteroid = preload("res://scenes/Asteroid.tscn")
+
 onready var Enemy = preload("res://scenes/Enemy.tscn")
 onready var EnemyBullet = preload("res://scenes/EnemyBullet.tscn")
+onready var EnemyExplosion = preload("res://scenes/EnemyExplosion.tscn")
+
+onready var PlayerBullet = preload("res://scenes/PlayerBullet.tscn")
+onready var PlayerMissile = preload("res://scenes/PlayerMissile.tscn")
+onready var PlayerMissileSmoke = preload("res://scenes/PlayerMissileSmoke.tscn")
 
 onready var Player = $"/root/Main/GameWorld/Player"
 

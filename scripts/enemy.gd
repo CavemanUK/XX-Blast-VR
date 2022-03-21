@@ -1,6 +1,11 @@
 extends KinematicBody
 
 # define a random speed for each unit
+
+# Firing timer should be 5
+
+
+
 var speed = rand_range(15,30)
 
 onready var main = get_tree().current_scene
@@ -24,7 +29,7 @@ func _spawn_bullet():
 	bullet.global_transform.origin = $Gun.global_transform.origin
 	bullet.look_at(player.global_transform.origin, Vector3.UP)
 	# make sure bullet speed is always proportionate to enemy speed
-	bullet.speed = speed + 4
+	bullet.speed = speed + 8
 	
 func _on_FiringTimer_timeout():
 	
@@ -42,6 +47,7 @@ func _on_FiringTimer_timeout():
 
 func _on_Area_body_entered(body):
 	if body.is_in_group("PlayerBullet"):
+		body.queue_free()
 		die()
 
 func die():

@@ -37,7 +37,6 @@ color_space = 0
 refresh_rate = 0.0
 
 [node name="ARVRCamera" parent="FPController" index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, -0.723545 )
 far = 350.0
 
 [node name="LeftHandController" parent="FPController" index="2"]
