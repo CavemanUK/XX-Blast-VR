@@ -46,7 +46,7 @@ func _ready():
 		controllerNode.connect("controller_button_pressed", self, "fire_missile_at_nearest")
 
 func _physics_process(_delta):
-	if Globals.gameRunning:
+	if Globals.gameRunning and $Ship.visible:
 		# inputVector is amount joystick has been moved to determine direction
 		var inputVector = Vector3()
 		

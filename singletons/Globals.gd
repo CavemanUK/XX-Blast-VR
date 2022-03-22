@@ -15,8 +15,11 @@ onready var PlayerMissileSmoke = preload("res://scenes/PlayerMissileSmoke.tscn")
 
 onready var Player = $"/root/Main/GameWorld/Player"
 
-# Used to keep track of if the game is actually running.  When false, enemies arent generated etc 
+enum {GameInitialising, StartScreen, GamePlaying}
 
+
+# Used to keep track of if the game is actually running.  When false, enemies arent generated etc 
+export var gameStatus = GameInitialising
 export var gameRunning = false
 
 func lock_into_rotation(angle):
