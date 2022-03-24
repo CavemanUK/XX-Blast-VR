@@ -7,3 +7,6 @@ Controls are left controller thumbstick to move and either trigger to fire.
 
 If you run on a windows PC without VR you can control with cursor keys and space bar to fire.
 
+UPDATE: There's now homing missiles that will lock onto the nearest target (ish).  X button on controller
+or C key on keyboard.
+
