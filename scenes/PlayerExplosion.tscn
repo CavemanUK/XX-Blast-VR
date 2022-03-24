@@ -1,0 +1,135 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://sounds/enemyExplosion.wav" type="AudioStream" id=1]
+[ext_resource path="res://scripts/PlayerExplosion.gd" type="Script" id=2]
+
+[sub_resource type="SpatialMaterial" id=4]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+
+[sub_resource type="CubeMesh" id=2]
+material = SubResource( 4 )
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0, 0.234848, 0.469697, 0.772727, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.516874, 0.97998, 0.621797, 1, 0.92559, 0.959961, 0.0337486, 1, 1, 0, 0, 1, 0, 0, 0, 1 )
+
+[node name="PlayerExplosion" type="Spatial"]
+transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+script = ExtResource( 2 )
+
+[node name="CPUParticles0" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.374219, 1.06372, 0.847788 )
+emitting = false
+amount = 70
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 2 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 3 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="CPUParticles0"]
+stream = ExtResource( 1 )
+unit_db = 20.0
+
+[node name="CPUParticles1" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40527, -0.445975, 0.423521 )
+emitting = false
+amount = 70
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 2 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 3 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="CPUParticles1"]
+stream = ExtResource( 1 )
+unit_db = 20.0
+
+[node name="CPUParticles2" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.428217, -1.27001, 1.42142 )
+emitting = false
+amount = 70
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 2 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 3 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="CPUParticles2"]
+stream = ExtResource( 1 )
+unit_db = 20.0
+
+[node name="CPUParticles3" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.338565, 1.10688, -1.03424 )
+emitting = false
+amount = 70
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 2 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 3 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="CPUParticles3"]
+stream = ExtResource( 1 )
+unit_db = 20.0
+
+[node name="CPUParticles4" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.653673, -0.421645, -1.02892 )
+emitting = false
+amount = 70
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.51
+mesh = SubResource( 2 )
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 60.0
+initial_velocity_random = 0.52
+angular_velocity = 0.65
+angular_velocity_random = 0.26
+radial_accel = 27.16
+tangential_accel = 19.75
+color_ramp = SubResource( 3 )
+
+[node name="ExplosionSound" type="AudioStreamPlayer3D" parent="CPUParticles4"]
+transform = Transform( 3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0, 0, 0 )
+stream = ExtResource( 1 )
+unit_db = 20.0

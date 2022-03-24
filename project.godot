@@ -29,7 +29,7 @@ config/icon="res://images/xxblastlogo.png"
 
 [autoload]
 
-Globals="*res://singletons/Globals.gd"
+Globals="*res://scenes/Globals.tscn"
 PreCache="*res://singletons/PreCache.gd"
 
 [gdnative]

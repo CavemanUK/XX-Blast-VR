@@ -3,13 +3,11 @@ extends ARVRController
 signal activated
 signal deactivated
 
-onready var player = $"../../GameWorld/Player"
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if is_button_pressed(1):
 		emit_signal("controller_button_pressed", 1)
-		player._fire_missile_at_nearest()
+		Globals.Player._fire_missile_at_nearest()
 	
 	if get_is_active():
 		if !visible:
@@ -31,16 +29,20 @@ func _input(event):
 	var joystick_vector = Vector2(get_joystick_axis(0), get_joystick_axis(1))
 	joystick_vector = joystick_vector.normalized().round()
 	var trigger_throttle = get_joystick_axis(2)
-
-	player.controllerInput = joystick_vector
+	
+	var playerExists = Globals.GameWorld.get_node_or_null("Player")
+	
+	if playerExists:
+		Globals.player.controllerInput = joystick_vector
 	
 	if trigger_throttle == 1:
-		if Globals.gameRunning:
-			player.autofire = true
+		if playerExists:
+			Globals.player.autofire = true
 		else:
 			$"../../GameWorld".startGame()
 	else:
-		player.autofire = false
+		if playerExists:
+			Globals.player.autofire = false
 
 func rumblePulse(time = 1):
 	rumble = .5

@@ -18,12 +18,23 @@ var inVR = true
 
 var interface : ARVRInterface
 
+
+
 func get_interface() -> ARVRInterface:
 	return interface
 
 func _ready():
 	if auto_initialise:
 		initialise()
+	
+func _process(delta):
+	if inVR == false:
+
+		# not in VR, the camera can follow behind the player
+		if Globals.GameWorld.get_node_or_null("Player"):
+			global_transform.origin.x = Globals.player.global_transform.origin.x
+			global_transform.origin.y = Globals.player.global_transform.origin.y +6
+			global_transform.origin.z = Globals.player.global_transform.origin.z +20
 
 func initialise() -> bool:
 	if interface:

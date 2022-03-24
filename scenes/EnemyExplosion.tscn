@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://sounds/enemyExplosion.wav" type="AudioStream" id=1]
-[ext_resource path="res://scripts/KillParticles.gd" type="Script" id=2]
+[ext_resource path="res://scripts/ExplosionParticles.gd" type="Script" id=2]
 
 [sub_resource type="SpatialMaterial" id=4]
 vertex_color_use_as_albedo = true
@@ -14,7 +14,7 @@ material = SubResource( 4 )
 offsets = PoolRealArray( 0, 0.325758, 0.575758, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 0.92559, 0.959961, 0.0337486, 1, 1, 0, 0, 1, 0, 0, 0, 1 )
 
-[node name="KillParticles" type="Spatial"]
+[node name="KillParticles" type="KinematicBody"]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
 script = ExtResource( 2 )
 
@@ -22,7 +22,6 @@ script = ExtResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50 )
 stream = ExtResource( 1 )
 unit_db = 20.0
-autoplay = true
 
 [node name="CPUParticles" type="CPUParticles" parent="."]
 emitting = false
