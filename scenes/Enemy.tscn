@@ -134,6 +134,9 @@ unit_db = 15.0
 [node name="Cube" type="MeshInstance" parent="."]
 transform = Transform( -1, 0, 5.32375e-05, 0, 1, 0, -5.32375e-05, 0, -1, 0, 0, 0 )
 mesh = SubResource( 1 )
+material/0 = null
+material/1 = null
+material/2 = null
 
 [node name="Gun" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1.44606, 0, 0, 0, 1, -0.226493, -0.00972927, 4.79246 )

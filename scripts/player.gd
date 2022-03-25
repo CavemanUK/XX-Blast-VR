@@ -1,80 +1,95 @@
 extends KinematicBody
 
-# set maximum move speed for ship
+# const
 const MAXSPEED = 20
-
-# set acceleration
 const ACCELERATION = 1
-
-# set default delay for firing Guns
 const GUNS_DEFAULT_DELAY = 12
-
-# set default delay for missile
 const MISSILE_DEFAULT_DELAY = 50
+const MIN_X = -150
+const MAX_X = 150
+const MIN_Y = -150
+const MAX_Y = 150
 
-# gunsFiringDelay to prevent gun firing too often
-var gunsFiringDelay = GUNS_DEFAULT_DELAY
+# onready preload
+onready var PlayerBullet = preload("res://scenes/PlayerBullet.tscn")
+onready var PlayerMissile = preload("res://scenes/PlayerMissile.tscn")
 
-# same for missiles
-var missileFiringDelay = MISSILE_DEFAULT_DELAY
+# onready nodes
+onready var GameWorld = $"/root/Main/GameWorld"
 
-# toggle to whether guns are auto firing.  primarily used to match with VR controller trigger.
-var autofire = false
-
-# velocity
-var velo = Vector3()
-
-# array of gun nodes on ship
+# onready var
+onready var gunsFiringDelay = GUNS_DEFAULT_DELAY
+onready var missileFiringDelay = MISSILE_DEFAULT_DELAY
 onready var guns = [$Gun0,$Gun1]
-
-# store the current scene node in a variable for reference
-onready var main = get_tree().current_scene
-
-# get the left hand controller node so we can communicate with it
-onready var controllerNode = get_node("/root/Main/FPController/LeftHandController")
-
-# store the initial position of the ship so we can reset when player dies
 onready var resetPosition = transform
 
-var controllerInput = Vector2()
+var alive = true
+var missileTriggered = false
+var autofire = false
+var velocity = Vector3()
 
-# set up a signal for if the player is killed.
+# signals
 signal player_killed
 
-func _ready():
-	if controllerNode:
-		controllerNode.connect("controller_button_pressed", self, "fire_missile_at_nearest")
-
 func _physics_process(_delta):
-	if Globals.gameRunning and $Ship.visible:
+	if Globals.gameRunning and alive:
 		# inputVector is amount joystick has been moved to determine direction
 		var inputVector = Vector3()
 		
-		if $"../../FPController".inVR:
+		if $"/root/Main/FPController".inVR:
 			# if FPController exists we are in VR and will use controllers for input
-			inputVector = controllerInput
+			var leftController = $"/root/Main/FPController/LeftHandController"
+			var rightController = $"/root/Main/FPController/RightHandController"
+			
+			var leftJoystickVector = Vector2(leftController.get_joystick_axis(0), leftController.get_joystick_axis(1))
+			var triggerValue = leftController.get_joystick_axis(2)
+			
+			
+			inputVector = leftJoystickVector.normalized().round()
+			
+			if triggerValue >=1:
+				autofire = true
+			else:
+				autofire = false
+				
+			if leftController.is_button_pressed(6):
+				if not missileTriggered:
+					_fire_missile_at_nearest()
+				missileTriggered = true
+			else:
+				missileTriggered = false
+
+			if rightController.is_button_pressed(1):
+				if not missileTriggered:
+					_fire_missile_at_nearest()
+				missileTriggered = true
+			else:
+				missileTriggered = false
+				
+
 		else:
+			
 			# not in VR mode so we will use simple keys.
 			
-			if Input.is_action_pressed("ui_select"):
+			if Input.is_action_pressed("player_fire"):
 				_fire_guns()
-			if Input.is_action_pressed("game_missile"):
+			if Input.is_action_pressed("player_missile"):
 				_fire_missile_at_nearest()
 				
-			inputVector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-			inputVector.y = Input.get_action_strength("ui_up") - Input.get_action_strength("ui_down")
+			inputVector.x = Input.get_action_strength("player_right") - Input.get_action_strength("player_left")
+			inputVector.y = Input.get_action_strength("player_up") - Input.get_action_strength("player_down")
 			inputVector = inputVector.normalized()
 		
 		# calculate velocity based on input, max speed and acceleration
-		velo.x = move_toward(velo.x, inputVector.x * MAXSPEED, ACCELERATION)
-		velo.y = move_toward(velo.y, inputVector.y * MAXSPEED, ACCELERATION)
+		velocity.x = move_toward(velocity.x, inputVector.x * MAXSPEED, ACCELERATION)
+		velocity.y = move_toward(velocity.y, inputVector.y * MAXSPEED, ACCELERATION)
 	
 		# rotate the ship to bank when moving
-		rotation_degrees.z = velo.x * -.8
-		rotation_degrees.x = velo.y / 2
-		rotation_degrees.y = -velo.x / 2
+		rotation_degrees.z = velocity.x * -.8
+		rotation_degrees.x = velocity.y / 2
+		rotation_degrees.y = -velocity.x / 2
 	
-		if velo.x == 0 and velo.y == 0:
+		if velocity.x == 0 and velocity.y == 0:
 			# no movement currently so will play the Idling animation of player.
 			$AnimationPlayer.play("Idle")
 		else:
@@ -88,7 +103,10 @@ func _physics_process(_delta):
 			missileFiringDelay -= 1
 
 		# after all the processing, we can now move the player to new position
-		var _result = move_and_slide(velo)
+		var _result = move_and_slide(velocity)
+		
+		transform.origin.x = clamp(transform.origin.x, MIN_X, MAX_X)
+		transform.origin.y = clamp(transform.origin.y, MIN_Y, MAX_Y)
 		
 		# if we find that autofire is one, fire the guns.
 		if autofire:
@@ -96,98 +114,68 @@ func _physics_process(_delta):
 
 func _fire_guns():
 	# no point firing if the game isn't running or ship isn't in play
-	if Globals.gameRunning and $Ship.visible:
+	if Globals.gameRunning and alive:
 		# check to see if we're allowed to fire yet
 		if gunsFiringDelay <= 0:
 			# cycle through the gun spawn points and add a bullet to each node
 			for i in guns:
-				var bullet = Globals.PlayerBullet.instance()
-				main.add_child(bullet)
+				var bullet = PlayerBullet.instance()
+				GameWorld.add_child(bullet)
 				bullet.global_transform.origin = i.global_transform.origin
-			
+				bullet.rotation = rotation
+				
 			# reset to delay for the default period
 			gunsFiringDelay = GUNS_DEFAULT_DELAY
 
 func _fire_missile(targetNode):
 	# no point firing if the game isn't running or ship isn't in play
-	if Globals.gameRunning and $Ship.visible:
+	if Globals.gameRunning and alive:
 		# check to see if we're allowed to fire yet
 		if missileFiringDelay <= 0:
 			# yes we can fire, add a missile to the missile spawn node
-			var missile = Globals.PlayerMissile.instance()
-			main.add_child(missile)
+			var missile = PlayerMissile.instance()
+			GameWorld.add_child(missile)
 			# set the target to targetNode so the missile will attack that node
-			missile.targetNode = targetNode
+			if targetNode:
+				missile.targetNode = targetNode
 			missile.global_transform.origin = $MissileLauncher.global_transform.origin
 			
 			# reset the delay for the default period
 			missileFiringDelay = MISSILE_DEFAULT_DELAY
 
 func _fire_missile_at_nearest():
-	
 	# get an array of all current enemies in play by checking their group assignment
 	var enemies = get_tree().get_nodes_in_group("Enemy")
 	
 	# set default nearest node as the actual spawner node.  This way if no enemy is found, we
 	# have a default target.
-	var nearestEnemyNode = $"../EnemySpawner"
+	var nearestEnemyNode = null
 	var nearestDistance = 10000
 	
 	# check if enemies were found
 	if enemies:
 		# iterate through all current enemies
 		for enemy in enemies:
+			
 			# get the distance value between player and this enemy
-			var distance_to_enemy = translation.distance_to(enemy.global_transform.origin)
+			var distance_to_enemy = self.global_transform.origin.distance_to(enemy.global_transform.origin)
+
 			# if the distance is less than the current nearest enemy make this node the new nearest.
-			if distance_to_enemy <= nearestDistance:
-				nearestEnemyNode = enemy
-				
+			if distance_to_enemy < nearestDistance:
+				# make sure enemy is over 50 units away and is in front of us
+				if distance_to_enemy > 100 and enemy.global_transform.origin.x < -100:
+					if enemy.targetted == false:
+						nearestEnemyNode = enemy
+						nearestDistance = distance_to_enemy
+					
 	# fire a missile at whoever is now the nearest enemy, even if its the spawn node.
+	if nearestEnemyNode != null:
+		nearestEnemyNode.targetted = true
+	
 	_fire_missile(nearestEnemyNode)
 
 func _on_CollisionArea_body_entered(body):
-	# only check out collisions if game is running and ship is on screen
-	if Globals.gameRunning and $Ship.visible:
-		# any collision with anything inside the collision masks means the player would get killed
-		# so we emit a signal for the main game loop to be aware and decide what to do next.
-		emit_signal("player_killed")
-		
-		# call playerDeath function to handle the death animation etc
-		playerDeath()
-		
-		# kill the colliding body. This is untidy and needs a better solution
-		body.queue_free()
-
-func playerDeath():
-	
-	# first part of death is to hide the ship mesh.  This is just the mesh and not the rest
-	# of the player as we need to keep the rest visible to show the explosion.
-	
-	hideShip()
-	
-	# trigger the explosion particle animations one at a time with a 10ms delay to make the 
-	# explosion look big and impressive.
-	
-	for i in 5:
-		var explosion = get_node("Explosion/CPUParticles"+str(i))
-		var explosionSound = get_node("Explosion/CPUParticles"+str(i)+"/ExplosionSound")
-		explosion.emitting = true
-		
-		# play the explosion sound from the node.
-		explosionSound.play()
-		
-		# wait 10ms before continuing the for loop
-		yield(get_tree().create_timer(.1), "timeout")
-	
-func hideShip():
-	# hide just the ship mesh
-	$Ship.visible = false
-
-func resetShip():
-	# puts the players position and rotation back to default
-	transform = resetPosition
-	# make sure the ship mesh is visible
-	$Ship.visible = true
-	# make sure the rest of the player node is visible
-	visible = true
+	emit_signal("player_killed", self)
+	alive = false
+	# destroy whatever collided with player
+	body.queue_free()

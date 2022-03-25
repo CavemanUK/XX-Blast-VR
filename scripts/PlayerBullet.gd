@@ -2,7 +2,7 @@ extends KinematicBody
 
 var speed = 100
 
-onready var controller = $"../FPController/LeftHandController"
+onready var controller = $"/root/Main/FPController/LeftHandController"
 	
 func _ready():
 	# buzz the controller for feed back

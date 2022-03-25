@@ -30,12 +30,6 @@ collision_layer = 16
 collision_mask = 17
 script = ExtResource( 2 )
 
-[node name="spawnPoint0" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 6, 0 )
-
-[node name="spawnPoint1" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 6, 0 )
-
 [node name="AsteroidBody" type="KinematicBody" parent="."]
 
 [node name="mesh" type="MeshInstance" parent="AsteroidBody"]
@@ -55,5 +49,11 @@ shape = SubResource( 6 )
 [node name="CollisionShape" type="CollisionShape" parent="AsteroidBody"]
 transform = Transform( 1.37751, 0.00126251, -0.00149956, -0.00173867, 0.999999, 0.000217869, 0.00206603, -0.000215954, 0.999999, 0, 0, 0 )
 shape = SubResource( 6 )
+
+[node name="spawnPoint0" type="Spatial" parent="AsteroidBody"]
+transform = Transform( 1, 0, 0, 0, 1, 7.10543e-15, 0, -7.10543e-15, 1, -40, 6, -5.68434e-14 )
+
+[node name="spawnPoint1" type="Spatial" parent="AsteroidBody"]
+transform = Transform( 1, 0, 0, 0, 1, 7.10543e-15, 0, -7.10543e-15, 1, 40, 6, -5.68434e-14 )
 
 [connection signal="body_entered" from="AsteroidBody/Area" to="." method="_on_Area_body_entered"]

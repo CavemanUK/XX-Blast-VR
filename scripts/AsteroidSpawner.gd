@@ -1,67 +1,134 @@
 extends Spatial
 
-const MAX_ASTEROIDS = 200
+onready var AsteroidExplosion = preload("res://scenes/AsteroidExplosion.tscn")
+onready var Asteroid = preload("res://scenes/Asteroid.tscn")
+
+onready var GameWorld = $"/root/Main/GameWorld"
+
+const ASTEROID_SPAWN_RATE = 5.00
+const ASTEROID_MIN_X_ORIGIN = -150.00
+const ASTEROID_MAX_X_ORIGIN = 150.00
+const ASTEROID_MIN_Y_ORIGIN = -150.00
+const ASTEROID_MAX_Y_ORIGIN = 150.00
+const ASTEROID_MIN_Z_ORIGIN = -800.00
+const ASTEROID_MAX_Z_ORIGIN = -350.00
+const ASTEROID_MIN_SPEED = 10.00
+const ASTEROID_MAX_SPEED = 50.00
+const ASTEROID_MIN_SIZE = .2
+const ASTEROID_MAX_SIZE = .5
+const MAX_ASTEROIDS = 30
+
+func _ready():
+	# set the spawn rate timer
+	$Timer.wait_time = ASTEROID_SPAWN_RATE
 
 func _on_Timer_timeout():
+	# check how many asteroids are in play already.
 	var numAsteroids = get_tree().get_nodes_in_group("Asteroid").size()
+	
+	# if not maximum then lets spawn another!
 	if numAsteroids < MAX_ASTEROIDS:
-		var asteroid = Globals.Asteroid.instance()
-		add_child(asteroid)
-		asteroid.transform.origin =  transform.origin + Vector3(rand_range(-250,250),rand_range(-250,250),rand_range(-200,-100))
-		#asteroid.look_at(Globals.Player.global_transform.origin, Vector3.UP)
-		asteroid.connect("asteroid_dead", self, "processAsteroidDead")
+		spawn()
+		
+func spawn():
+	# generate a random speed 
+	var speed = rand_range(ASTEROID_MIN_SPEED,ASTEROID_MAX_SPEED)
+	
+	# generate a random origin for the unit so it spawns randomly around the origin point
+	var pos_x = rand_range(ASTEROID_MIN_X_ORIGIN,ASTEROID_MAX_X_ORIGIN)
+	var pos_y = rand_range(ASTEROID_MIN_Y_ORIGIN,ASTEROID_MAX_Y_ORIGIN)
+	var pos_z = rand_range(ASTEROID_MIN_Z_ORIGIN,ASTEROID_MAX_Z_ORIGIN)
+	
+	# generate a random size
+	var size = rand_range(ASTEROID_MIN_SIZE,ASTEROID_MAX_SIZE)
+	
+	# create a new instance
+	var asteroid = Asteroid.instance()
+	
+	# add it to the game world
+	GameWorld.add_child(asteroid)
 
-func processAsteroidDead(asteroid):
-	randomize()
-	if asteroid.alive == true:
-		asteroid.alive = false
+	# place it in the correct position in the GameWorld
+	asteroid.global_transform.origin =  global_transform.origin + Vector3(pos_x,pos_y,pos_z)
 	
-		var asteroid_scale = asteroid.get_scale()
-		var asteroid_speed = asteroid.speed
-		var asteroid_spawnPoint = {}
-		var asteroid_rotation = asteroid.rotation
+	# resize to the generated size
+	asteroid.resize(size)
 	
-		asteroid_spawnPoint[0] = asteroid.get_node("spawnPoint0").global_transform.origin
-		asteroid_spawnPoint[1] = asteroid.get_node("spawnPoint1").global_transform.origin
+	# set its speed
+	asteroid.speed = speed
 	
-		blowupAsteroid(asteroid)
-		yield(get_tree().create_timer(0.1), "timeout")
-		var new_scale = asteroid_scale.x / 2
+	# connect a signal to handle when it dies
+	asteroid.connect("asteroid_dead", self, "processDeadAsteroid")
+
+func processDeadAsteroid(oldAsteroid):
+	#
+	# Function to see if the old asteroid needs splitting into fragments and handles destroying it
+	#
 	
+	# prevent multiple calls to this function in relation to this asteroid while it's being destroyed.
+	if oldAsteroid.alive == true:
+		oldAsteroid.alive = false
+	
+		# get the size of the old asteroid and halve it for the fragments
+		var newAsteroidScale = oldAsteroid.get_scale().x / 2
+		var newAsteroidSpeed = oldAsteroid.speed
+		var spawnPoint = {}
+		var newAsteroidHeading = oldAsteroid.rotation
+	
+		# uses the spawnpoint nodes placed in the Asteroid scene (possibly not required)
+		spawnPoint[0] = oldAsteroid.get_node("AsteroidBody/spawnPoint0").global_transform.origin
+		spawnPoint[1] = oldAsteroid.get_node("AsteroidBody/spawnPoint1").global_transform.origin
+	
+		# call the function to kill the old asteroid node
+		destroyAsteroid(oldAsteroid)
+
 		# if asteroids are really small, no point creating fragments
-		if new_scale < .02:
+		if newAsteroidScale < .02:
 			return
 
-		# generate new fragments half the size of the original asteroid
+		# generate 2 new fragments
 		for i in 2:
-			var newasteroid = Globals.Asteroid.instance()
-			add_child(newasteroid)
-			newasteroid.resize(new_scale)
+			# create a new instance
+			var newAsteroid = Asteroid.instance()
+			
+			# add into the world
+			GameWorld.add_child(newAsteroid)
+			
+			# resize to the new size
+			newAsteroid.resize(newAsteroidScale)
 			
 			# place new asteroid on one of the spawn points so new fragments don't hit each other
-			newasteroid.global_transform.origin = asteroid_spawnPoint[i]
-			
-			# make smaller fragment point in same direction as starting point
-			newasteroid.rotation = asteroid_rotation
+			newAsteroid.global_transform.origin = spawnPoint[i]
 			
 			# set asteroids speed to be slightly faster because of blast
-			newasteroid.speed = asteroid_speed + 10 
+			newAsteroid.speed = newAsteroidSpeed * 1.5
 			
-			newasteroid.connect("asteroid_dead", self, "processAsteroidDead")
-		
+			# now we need to rotate the asteroids slightly so they head off in different directions
+			
+			# First, lets make smaller fragment point in same direction as parent did
+			newAsteroid.rotation = newAsteroidHeading
+			
 			# now lets send new asteroid off in slightly different direction
-			var rand_x = rand_range(45,90)
-			var rand_y = rand_range(45,90)
+			var rand_x = rand_range(0,360)
+			var rand_y = rand_range(0,360)
+			
+			# determine which spawnpoint we are doing to rotate in the oposite direction
 			if i == 0:
-				newasteroid.rotation_degrees += Vector3(rand_x,rand_y,0)
+				newAsteroid.rotation_degrees += Vector3(rand_x,rand_y,0)
 			else:
-				newasteroid.rotation_degrees += Vector3(-rand_x,-rand_y,0)
+				newAsteroid.rotation_degrees += Vector3(-rand_x,-rand_y,0)
+			
+			# connect signals to the fragments
+			newAsteroid.connect("asteroid_dead", self, "destroyAsteroid")
 		
-func blowupAsteroid(asteroid):
-	var explosion = Globals.AsteroidExplosion.instance()
-	add_child(explosion)
-	explosion.scale = asteroid.scale
+func destroyAsteroid(asteroid):
+	# create an explosion instance
+	var explosion = AsteroidExplosion.instance()
+	# add to the GameWorld
+	GameWorld.add_child(explosion)
+	# move to the position of the asteroid
 	explosion.transform.origin = asteroid.transform.origin
-	yield(get_tree().create_timer(0.1), "timeout")
+	# halve the scale because its too big otherwise
+	explosion.scale = asteroid.scale / 2
+	# kill the asteroid node	
 	asteroid.queue_free()
-	
