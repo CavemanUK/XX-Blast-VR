@@ -1,22 +1,34 @@
 extends KinematicBody
 
-# define default speed
-var speed = Globals.ENEMY_DEFAULT_BULLET_SPEED
+#define default speed
+const DEFAULT_SPEED = 4
+var speed = DEFAULT_SPEED
+onready var player = $"../GameWorld/Player"
 
-# make a note of origin point so we can see how far bullet has travelled
-onready var origin_point = global_transform.origin
-
-func _physics_process(_delta):
-	# If game is initialising, don't bother continuing
-	if Globals.gameStatus == Globals.GameInitialising:
-		return
-		
-	# When this was instantiated, the bullet was given a direction to look
-	# we move back along the z axis.  negative because thats forward
-	var _result = move_and_slide(-global_transform.basis.z * speed)
+func _ready():
+	$LifeTimer.start()
 	
-	# if bullet has travelled further than the default range, kill it
-	if translation.distance_to(origin_point) > Globals.ENEMY_DEFAULT_BULLET_DISTANCE:
-		queue_free()
+# When this was instantiated, the bullet was given a direction to look
+# physics process sends the back along the z axis.  negative because thats forward
+func _physics_process(_delta):
+	
+	var _result = move_and_slide(- global_transform.basis.z * speed)
+
+# when timeout out on the Life Timer, kill the bullet
+func _on_LifeTimer_timeout():
+	queue_free()
+
+# check if enemy bullet hit an enemy
+# if so, remove bullet but don't do anything to the enemy unit	
+func _on_Area_body_entered(body):
+	print("Enemy Bullet Hit "+str(body.name))
+	if body.is_in_group("Player"):
+		print("hit player")
+		
+	queue_free()
 
 
+
+func _on_CollisionArea_body_entered(_body):
+	print("enemy bullet hit something")
+	queue_free()

@@ -54,4 +54,12 @@ unit_db = 21.0
 one_shot = true
 autostart = true
 
+[node name="Area" type="Area" parent="."]
+collision_layer = 2
+collision_mask = 20
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.70912 )
+shape = SubResource( 3 )
+
 [connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]

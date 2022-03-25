@@ -1,13 +1,13 @@
 [gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://images/environment.png" type="Texture" id=1]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/StarParticles.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/godot-openxr/scenes/first_person_controller_vr.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/EnemySpawner.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/StartScreen.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/AsteroidSpawner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://sounds/Intro Music.ogg" type="AudioStream" id=8]
-[ext_resource path="res://scenes/Planet.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scripts/Main.gd" type="Script" id=10]
 [ext_resource path="res://sounds/XX Blast Level 1.ogg" type="AudioStream" id=13]
 
@@ -22,10 +22,9 @@ ambient_light_color = Color( 0.737255, 0.737255, 0.737255, 1 )
 ambient_light_sky_contribution = 0.3
 fog_enabled = true
 fog_color = Color( 0, 0, 0, 1 )
-fog_sun_color = Color( 1, 1, 1, 1 )
+fog_sun_color = Color( 0, 0, 0, 1 )
 fog_depth_begin = 0.0
 fog_depth_end = 300.0
-fog_transmit_enabled = true
 fog_height_min = 50.0
 
 [node name="Main" type="Spatial"]
@@ -61,11 +60,12 @@ transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -5, -100 )
 [node name="EnemySpawner" parent="GameWorld" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -200 )
 
+[node name="Player" parent="GameWorld" instance=ExtResource( 2 )]
+transform = Transform( 0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 7, 1.5, 9 )
+visible = false
+
 [node name="AsteroidSpawner" parent="GameWorld" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -150 )
-
-[node name="Planet" parent="GameWorld" instance=ExtResource( 9 )]
-transform = Transform( 200, 0, 0, 0, 200, 0, 0, 0, 200, -400, -180.497, -100 )
 
 [node name="StartScreen" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -62.3247 )
