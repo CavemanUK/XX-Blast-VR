@@ -51,13 +51,6 @@ func _physics_process(_delta):
 				autofire = true
 			else:
 				autofire = false
-				
-			if leftController.is_button_pressed(6):
-				if not missileTriggered:
-					_fire_missile_at_nearest()
-				missileTriggered = true
-			else:
-				missileTriggered = false
 
 			if rightController.is_button_pressed(1):
 				if not missileTriggered:
